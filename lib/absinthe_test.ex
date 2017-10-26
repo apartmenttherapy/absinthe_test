@@ -1,18 +1,20 @@
 defmodule AbsintheTest do
   @moduledoc """
-  Documentation for AbsintheTest.
+  The AbsintheTest Application module, this provides a supervisor/starting point for the QueryStore during tests.
   """
 
-  @doc """
-  Hello world.
+  use Application
 
-  ## Examples
+  alias AbsintheTest.QueryStore
 
-      iex> AbsintheTest.hello
-      :world
+  def start(_type, _args) do
+    import Supervisor.Spec
 
-  """
-  def hello do
-    :world
+    children = [
+      supervisor(QueryStore, [])
+    ]
+
+    opts = [strategy: :one_for_one, name: AbsintheTest.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
