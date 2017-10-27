@@ -69,6 +69,12 @@ defmodule AbsintheTest.Context do
     |> Map.get(data_key)
     |> Map.equal?(values)
   end
+  def expected_result?({:ok, %{errors: payload}, error_key, values}) do
+    payload
+    |> Enum.reduce(false, fn error, result ->
+         result || Map.get(error, error_key) == values
+       end)
+  end
   def expected_result?({:error, _}, _data_key, _values), do: false
 
   @doc """
